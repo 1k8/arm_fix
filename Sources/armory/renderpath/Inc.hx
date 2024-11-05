@@ -600,16 +600,16 @@ class Inc {
 				#if (rp_voxels == "Voxel AO")
 				{
 					if (t.name == "voxelsOut" || t.name == "voxelsOutB") {
-						t.format = "R8";
 						t.width = res * (6 + 16);
 						t.height = res * Main.voxelgiClipmapCount;
 						t.depth = res;
+						t.format = "R8";
 					}
 					else {
-						t.format = "R32";
 						t.width = res * 6;
 						t.height = res;
 						t.depth = res;
+						t.format = "R32";
 					}
 				}
 				#else
@@ -619,12 +619,13 @@ class Inc {
 						t.width = res * (6 + 16);
 						t.height = res * Main.voxelgiClipmapCount;
 						t.depth = res;
+						t.format = "RGBA32";
 					}
 					else if (t.name == "voxelsLight") {
-						t.format = "R32";
-						t.width = res;
+						t.width = res * 6;
 						t.height = res;
 						t.depth = res * 3;
+						t.format = "R32";
 					}
 					else {
 						t.format = "R32";
