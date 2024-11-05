@@ -74,13 +74,12 @@ void main() {
 	#endif
 	#endif
 
-	#ifdef _VoxelGI
+	ivec3 src = ivec3(gl_GlobalInvocationID.xyz);
 	vec3 light = vec3(0.0);
-	light.r = float(imageLoad(voxelsLight, ivec3(gl_GlobalInvocationID.xyz))) / 255;
-	light.g = float(imageLoad(voxelsLight, ivec3(gl_GlobalInvocationID.xyz) + ivec3(0, 0, voxelgiResolution.x))) / 255;
-	light.b = float(imageLoad(voxelsLight, ivec3(gl_GlobalInvocationID.xyz) + ivec3(0, 0, voxelgiResolution.x * 2))) / 255;
+	light.r = float(imageLoad(voxelsLight, src)) / 255;
+	light.g = float(imageLoad(voxelsLight, src + ivec3(0, 0, voxelgiResolution.x))) / 255;
+	light.b = float(imageLoad(voxelsLight, src + ivec3(0, 0, voxelgiResolution.x * 2))) / 255;
 	light /= 3;
-	#endif
 
 	for (int i = 0; i < 6 + DIFFUSE_CONE_COUNT; i++)
 	{
@@ -90,7 +89,7 @@ void main() {
 		float aniso_colors[6];
 		#endif
 
-		ivec3 src = ivec3(gl_GlobalInvocationID.xyz);
+		src = ivec3(gl_GlobalInvocationID.xyz);
 		src.x += i * res;
 		ivec3 dst = src;
 		dst.y += clipmapLevel * res;
@@ -124,9 +123,7 @@ void main() {
 			envl.g = float(imageLoad(voxels, src + ivec3(0, 0, voxelgiResolution.x * 10))) / 255;
 			envl.b = float(imageLoad(voxels, src + ivec3(0, 0, voxelgiResolution.x * 11))) / 255;
 			envl /= 3;
-			#ifdef _HOSEK
 			envl *= 100;
-			#endif
 
 			//clipmap to world
 			vec3 wposition = (gl_GlobalInvocationID.xyz + 0.5) / voxelgiResolution.x;
